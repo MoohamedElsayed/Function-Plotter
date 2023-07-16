@@ -58,7 +58,7 @@ class MainWindow(QMainWindow):
 
 
     def the_button_was_clicked(self):
-        func = self.f_x.text()
+        func = self.f_x.text().replace("^", "**")
         minimum_x = self.min_x.text()
         maximum_x = self.max_x.text()
 
@@ -111,9 +111,7 @@ class MplCanvas(FigureCanvasQTAgg):
 
 
 
-app = QApplication(sys.argv)
 
-window = MainWindow()
-window.show()
 
-app.exec_()
+
+
