@@ -1,11 +1,12 @@
 import sys
 from PySide2.QtCore import QRegExp
 from PySide2.QtGui import QIntValidator,QRegExpValidator
-from PySide2.QtWidgets import QApplication, QMainWindow,QMessageBox, QLineEdit,QPushButton, QLabel ,QWidget,QGridLayout,QVBoxLayout 
+from PySide2.QtWidgets import QApplication, QMainWindow,QMessageBox,QComboBox, QLineEdit,QPushButton, QLabel ,QWidget,QGridLayout,QVBoxLayout 
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 import numpy as np
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -15,7 +16,7 @@ class MainWindow(QMainWindow):
 
         # creating input box for the function and a restricting the user to specific input characters
         self.f_x = QLineEdit()
-        self.f_x.setPlaceholderText('Please Enter the Function')
+        self.f_x.setPlaceholderText('Please Enter the F(x)')
         accepted_inputs = QRegExp("[xX0-9()*/^+-]+")
         input_validator = QRegExpValidator(accepted_inputs, self.f_x)
         self.f_x.setValidator(input_validator)
@@ -30,6 +31,25 @@ class MainWindow(QMainWindow):
         self.max_x.setPlaceholderText('Please Enter max value of x')
         self.max_x.setValidator(QIntValidator())
 
+        # creating some optional parameters
+
+        #title
+        self.title = QLineEdit()
+        self.title.setPlaceholderText('Please Enter the plot title')
+
+
+        #color
+        self.color = QComboBox()
+        self.color.addItems(["blue", "red", "green"])
+
+        #xlabel
+        self.x_label = QLineEdit()
+        self.x_label.setPlaceholderText('Please Enter x label')
+
+        #xlabel
+        self.y_label = QLineEdit()
+        self.y_label.setPlaceholderText('Please Enter y label')
+
         # creating grid layout and adding the previous widgets to it
         user_input = QGridLayout()
         user_input.addWidget(QLabel("Function"),0,0)
@@ -40,6 +60,18 @@ class MainWindow(QMainWindow):
 
         user_input.addWidget(QLabel("Max x"),0,2)
         user_input.addWidget(self.max_x,1,2)
+
+        user_input.addWidget(QLabel("Choose your favourite color"),2,0)
+        user_input.addWidget(self.color,3,0)
+
+        user_input.addWidget(QLabel("Enter X label for the plot (Optional)"),2,1)
+        user_input.addWidget(self.x_label,3,1)
+
+        user_input.addWidget(QLabel("Enter Y label for the plot (Optional)"),2,2)
+        user_input.addWidget(self.y_label,3,2)                
+
+        user_input.addWidget(QLabel("Enter the title for the plot (Optional)"),4,1)
+        user_input.addWidget(self.title,5,1)                
 
         # creating a button and adding it to the user input layout
         
@@ -58,17 +90,27 @@ class MainWindow(QMainWindow):
 
 
     def the_button_was_clicked(self):
-        func = self.f_x.text().replace("^", "**")
+        #collecting the user inputs from the gui
+        func = self.f_x.text()
+        func = func.replace("**", "$")
+        func = func.replace("//", "$")
+        func = func.replace("^", "**")
         minimum_x = self.min_x.text()
         maximum_x = self.max_x.text()
+        color = self.color.currentText()
+        xlabel = self.x_label.text()
+        ylabel = self.y_label.text()
+        title = self.title.text()
 
+        # Trying to plot the function, if error then the user input is wrong, Display him a message
         try:
-            self.w = plot_win(func,int(minimum_x),int(maximum_x))
+            self.w = plot_win(func,int(minimum_x),int(maximum_x),title,color,xlabel,ylabel)
             self.w.show()
         except:
             dlg = QMessageBox(self)
             dlg.setWindowTitle("Wrong Input")
             dlg.setText("Please input a valid function and limits")
+            dlg.setInformativeText("1- Limits must be valid numbers.\n2- Function must be a valid equation.\n3- Supported operators are : +, -, /, *, ^, ()")
             dlg.setIcon(QMessageBox.Warning)
             button = dlg.exec_() 
 
@@ -77,7 +119,7 @@ class plot_win(QWidget):
     """
     class to make a new window with the plotted function
     """
-    def __init__(self,fun_str,min_x,max_x):
+    def __init__(self,fun_str,min_x,max_x,title,color,xlabel,ylabel):
         super().__init__()
 
         def f_x(x):
@@ -89,10 +131,19 @@ class plot_win(QWidget):
             except:         
                 return eval(fun_str)
 
+        # ploting the function with the user inputs
         sc = MplCanvas(self, width=5, height=4, dpi=100)
         x = np.linspace(min_x,max_x,1000)
-        sc.axes.plot(x,f_x(x))
+        if color:
+            sc.axes.plot(x,f_x(x),color=color)
+        if xlabel:
+            sc.axes.set_xlabel(xlabel)
+        if ylabel:
+            sc.axes.set_ylabel(ylabel)
+        if title:
+            sc.axes.set_title(title)
 
+        #adding a navigation toolbar to the plot
         toolbar = NavigationToolbar(sc, self)
 
         layout = QVBoxLayout()
