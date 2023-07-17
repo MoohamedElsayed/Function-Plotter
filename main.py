@@ -10,38 +10,42 @@ def main():
     window.show()
 
     app.setStyleSheet("""
+                    QMainWindow {background-color: #C5FAD5;}
+
                     QPushButton {
-                        font: bold 12pt Times New Roman;
-                        color: #ab0202;
+                        font: bold 14pt Times New Roman;
+                        color: #013f5e;
                         border: 2px solid #cccccc;
                         border-radius: 10px;
                         padding: 5px;
-                        background-color: #ecf0d8;
+                        background-color: #F1AC88;
+                        min-width: 100px;
+                        min-height: 70px;
                     }
                     QLabel {
                         font: bold 12pt Times New Roman;
-                        color: #0824fc;
+                        color: #150b4a;
                         qproperty-alignment: AlignCenter;
                         border: 2px solid #cccccc;
                         border-radius: 10px;
                         padding: 10;
-                        background-color: #ecf0d8;
+                        background-color: #c5aefc;
                     }
                     QComboBox {
                         font:  10pt Arial;
-                        color: #333333;
+                        color: #234E70;
                         border: 2px solid #cccccc;
                         border-radius: 10px;
                         padding: 5px;
-                        background-color: #e0f0ff;
+                        background-color: #FBF8BE;
                     }
                     QLineEdit {
                         font:  10pt Arial;
-                        color: #333333;
+                        color: #381d06;
                         border: 2px solid #cccccc;
                         border-radius: 10px;
                         padding: 5px;
-                        background-color: #e0f0ff;
+                        background-color: #FFFFD2;
                     }
                 """)
     app.exec_()
