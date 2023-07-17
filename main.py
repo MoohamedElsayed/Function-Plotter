@@ -7,10 +7,14 @@ def main():
     app = QApplication(sys.argv)
 
     window = MainWindow()
+    window.setWindowIcon(QIcon("icon.png"))
     window.show()
 
     app.setStyleSheet("""
-                    QMainWindow {background-color: #C5FAD5;}
+                    QMainWindow {
+                        border: 2px solid #cccccc;
+                        border-radius: 10px;
+                        background-color: #C5FAD5;}
 
                     QPushButton {
                         font: bold 14pt Times New Roman;

@@ -1,8 +1,7 @@
 import sys
 from PySide2.QtCore import QRegExp,Qt
-from PySide2.QtGui import QIntValidator,QRegExpValidator
+from PySide2.QtGui import QIntValidator,QRegExpValidator,QIcon
 from PySide2.QtWidgets import QApplication, QMainWindow,QMessageBox,QComboBox, QLineEdit,QPushButton, QLabel ,QWidget,QGridLayout,QVBoxLayout ,QSpacerItem, QSizePolicy
-
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 import numpy as np
@@ -171,6 +170,8 @@ class plot_win(QWidget):
         layout.addWidget(toolbar)
         layout.addWidget(sc)
         self.setLayout(layout)
+        self.setWindowTitle('Plotted Function')
+        self.setWindowIcon(QIcon("icon.png"))
 
 
 class MplCanvas(FigureCanvasQTAgg):
