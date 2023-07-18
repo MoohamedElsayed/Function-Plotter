@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
         # creating input box for the function and a restricting the user to specific input characters
         self.f_x = QLineEdit()
         self.f_x.setPlaceholderText('Please Enter the function')
-        accepted_inputs = QRegExp("[xX0-9()*/^+-]+")
+        accepted_inputs = QRegExp("[x0-9()*/^+-]+")
         input_validator = QRegExpValidator(accepted_inputs, self.f_x)
         self.f_x.setValidator(input_validator)
 
