@@ -94,15 +94,12 @@ class MainWindow(QMainWindow):
         self.button.setCheckable(True)
         self.button.clicked.connect(self.the_button_was_clicked)
 
-        final_layout = QVBoxLayout()
-        final_layout.addLayout(user_input)
-        final_layout.addItem(spacer )
-        final_layout.addWidget(self.button)
-        final_layout.setAlignment(self.button,Qt.AlignHCenter)
+        user_input.addItem(spacer, 8, 0, 1, user_input.columnCount())
+        user_input.addWidget(self.button,9,1)
 
 
         widget = QWidget()
-        widget.setLayout(final_layout)
+        widget.setLayout(user_input)
         self.setCentralWidget(widget)
 
 
